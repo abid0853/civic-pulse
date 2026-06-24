@@ -5,7 +5,6 @@ import { db } from '../../lib/firebase/config';
 import { collection, query, where, orderBy, getDocs, doc, updateDoc, deleteField } from 'firebase/firestore';
 import { ShieldCheck, XCircle, CheckCircle, Clock, MapPin, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-export const dynamic = "force-dynamic";
 
 export default function AdminDashboard() {
   const [reviews, setReviews] = useState([]);
