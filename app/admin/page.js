@@ -5,6 +5,7 @@ import { db } from '../../lib/firebase/config';
 import { collection, query, where, orderBy, getDocs, doc, updateDoc, deleteField } from 'firebase/firestore';
 import { ShieldCheck, XCircle, CheckCircle, Clock, MapPin, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+export const dynamic = "force-dynamic";
 
 export default function AdminDashboard() {
   const [reviews, setReviews] = useState([]);
@@ -24,7 +25,7 @@ export default function AdminDashboard() {
       // Fetch both under_review and open to catch Power Outages which don't need a user fix proof
       const q = query(bountiesRef, where('status', 'in', ['open', 'under_review']));
       const querySnapshot = await getDocs(q);
-      
+
       const data = [];
       querySnapshot.forEach(doc => {
         const d = doc.data();
@@ -33,10 +34,10 @@ export default function AdminDashboard() {
           data.push({ id: doc.id, ...d });
         }
       });
-      
+
       // Client-side sort descending by created_at
       data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      
+
       setReviews(data);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -53,7 +54,7 @@ export default function AdminDashboard() {
       if (action === 'open' && reviewToUpdate?.category !== 'Power Outage') {
         updateData.fix_image_data = deleteField();
       }
-      
+
       await updateDoc(bountyRef, updateData);
 
       setReviews(current => current.filter(r => r.id !== id));
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 h-[calc(100vh-8rem)] pt-24">
-        
+
       <div className="flex items-center gap-3 mb-8">
         {/* ... existing header code ... */}
       </div>
@@ -78,7 +79,7 @@ export default function AdminDashboard() {
         <div>
           <h4 className="text-sm font-bold text-amber-800">Hackathon Deployment Notice</h4>
           <p className="text-xs text-amber-700 mt-0.5">
-            This Admin Portal is intentionally provided without authentication for ease of demonstration. 
+            This Admin Portal is intentionally provided without authentication for ease of demonstration.
             In a production environment, this route would be secured via NextAuth.js or Supabase Auth policies.
           </p>
         </div>
@@ -98,7 +99,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <AnimatePresence>
             {reviews.map((review) => (
-              <motion.div 
+              <motion.div
                 key={review.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -131,23 +132,23 @@ export default function AdminDashboard() {
                       {review.reward_points} PTS
                     </span>
                   </div>
-                  
+
                   <h3 className="font-bold text-lg text-slate-900 dark:text-white leading-tight mb-2">{review.title}</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">"Original Request: {review.description}"</p>
-                  
+
                   <div className="flex items-center gap-1 text-xs font-medium text-slate-400 mb-6">
                     <MapPin className="h-3 w-3" /> GPS: {review.lat.toFixed(4)}, {review.lng.toFixed(4)}
                   </div>
 
                   {/* Admin Actions */}
                   <div className="mt-auto grid grid-cols-2 gap-3">
-                    <button 
+                    <button
                       onClick={() => handleAction(review.id, 'open')}
                       className="flex items-center justify-center gap-1 py-2.5 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold text-sm hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
                     >
                       <XCircle className="h-4 w-4" /> Reject
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleAction(review.id, 'resolved')}
                       className="flex items-center justify-center gap-1 py-2.5 rounded-xl bg-emerald-500 text-white font-bold text-sm hover:bg-emerald-600 shadow-md shadow-emerald-500/20 transition-colors"
                     >
