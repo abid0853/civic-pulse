@@ -46,8 +46,8 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 h-auto lg:h-[calc(100vh-8rem)]">
-      
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 h-auto lg:h-[calc(100vh-8rem)] pt-8 lg:pt-12">
+
       {/* Left Column: The Bounty Map */}
       <div className="w-full lg:flex-1 h-[50vh] lg:h-full relative flex flex-col gap-4 order-1">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
@@ -68,9 +68,9 @@ export default function Dashboard() {
       {/* Right Column: Live Community Feed & Power Grid Status */}
       <div className="w-full lg:w-[400px] flex flex-col gap-4 h-[600px] lg:h-full order-2">
         <PowerGridStatus />
-        
+
         <div className="bg-white dark:bg-slate-900/50 backdrop-blur-xl border border-slate-200 dark:border-slate-800/50 rounded-3xl p-6 shadow-xl flex-1 flex flex-col overflow-hidden">
-          
+
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-indigo-500/10 rounded-lg">
@@ -87,9 +87,9 @@ export default function Dashboard() {
           {/* Scrolling Feed */}
           <div className="flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar pb-4 flex-1">
             {isLoading ? (
-               <div className="flex items-center justify-center h-full">
-                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
-               </div>
+              <div className="flex items-center justify-center h-full">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+              </div>
             ) : recentBounties.length === 0 ? (
               <div className="text-center text-slate-500 dark:text-slate-400 text-sm py-10">
                 No active issues reported yet. Be the first!
@@ -97,7 +97,7 @@ export default function Dashboard() {
             ) : (
               <AnimatePresence>
                 {recentBounties.map((bounty, i) => (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
                     key={bounty.id}
                     className="group flex flex-col p-4 mb-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/30 transition-all duration-300"

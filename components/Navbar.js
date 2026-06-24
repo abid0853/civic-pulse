@@ -67,7 +67,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex space-x-1 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden xl:flex space-x-1 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => {
               const isActive = pathname === item.path;
               const Icon = item.icon;
@@ -114,7 +114,7 @@ export default function Navbar() {
               </button>
             )}
 
-            <button className="lg:hidden p-2 text-slate-600 dark:text-slate-300" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <button className="xl:hidden p-2 text-slate-600 dark:text-slate-300" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -128,7 +128,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-slate-200/20 dark:border-white/10 bg-white dark:bg-slate-950 overflow-hidden"
+            className="xl:hidden border-t border-slate-200/20 dark:border-white/10 bg-white dark:bg-slate-950 overflow-hidden"
           >
             <div className="px-4 pt-2 pb-4 space-y-1">
               {navItems.map((item) => {
