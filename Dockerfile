@@ -11,9 +11,9 @@ RUN npm install
 # Copy all other files
 COPY . .
 
-# Set all your public environment variables for the BUILD phase
-# (Make sure to paste your actual Gemini API key here, without quotes!)
-ENV GEMINI_API_KEY=AIzaSyC7qFXlVZBEzIEoTRwfeBeA2owFfilQi5M
+# Pass the Gemini API key as a build argument instead of hardcoding it
+ARG GEMINI_API_KEY
+ENV GEMINI_API_KEY=$GEMINI_API_KEY
 ENV NEXT_PUBLIC_SUPABASE_URL=https://jvypxmbfnyxythdhujus.supabase.co
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_07TkmApeqVommKDSXyxWRA_6FjHJ0-w
 ENV NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyChXbxpy8y0WYSEenlexSkN7m0X-_vb_p0
