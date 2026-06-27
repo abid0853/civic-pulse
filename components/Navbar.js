@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, Map, Hexagon, Sun, Moon, Menu, X, Trophy, Flame, BarChart3, ShieldCheck, User } from 'lucide-react';
+import { ShieldAlert, Map, Hexagon, Sun, Moon, Menu, X, Trophy, Flame, BarChart3, ShieldCheck, User, Coins } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../lib/firebase/config';
@@ -45,6 +45,7 @@ export default function Navbar() {
   const navItems = [
     { name: 'Live Map', path: '/', icon: Map },
     { name: 'Report Issue', path: '/report', icon: ShieldAlert },
+    { name: 'Do & Earn', path: '/tasks', icon: Coins },
     { name: 'How It Works', path: '/how-it-works', icon: Flame },
     { name: 'Leaderboard', path: '/leaderboard', icon: Trophy },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 }, // NEW!

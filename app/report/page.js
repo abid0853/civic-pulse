@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UploadCloud, CheckCircle2, Cpu, FileText, ArrowRight, Loader2, MapPin, Crosshair, MessageSquare, MousePointerClick, Camera, Zap } from 'lucide-react';
+import { UploadCloud, CheckCircle2, Cpu, FileText, ArrowRight, Loader2, MapPin, Crosshair, MessageSquare, MousePointerClick, Camera, Zap, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth, db } from '../../lib/firebase/config';
@@ -22,6 +22,7 @@ export default function ReportIssue() {
   // AI & Image State
   const [imageUploaded, setImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [analysisStep, setAnalysisStep] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResult, setAiResult] = useState(null);
@@ -61,6 +62,7 @@ export default function ReportIssue() {
 
     setImageUploaded(true);
     setImagePreview(URL.createObjectURL(file));
+    setImageFile(file);
     setIsAnalyzing(true);
     setAnalysisStep(1); 
 
@@ -130,6 +132,17 @@ export default function ReportIssue() {
     setIsPublishing(true);
 
     try {
+      // Convert image to base64 data URL for Firestore (no Storage needed)
+      let before_image_data = null;
+      if (imageFile) {
+        before_image_data = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(imageFile);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+        });
+      }
+
       await addDoc(collection(db, 'bounties'), {
         title: aiResult.title,
         category: aiResult.category,
@@ -141,7 +154,8 @@ export default function ReportIssue() {
         lat: location.lat,
         lng: location.lng,
         user_id: user ? user.uid : null,
-        status: 'open',
+        before_image_data: before_image_data,
+        status: 'pending',
         created_at: new Date().toISOString()
       });
 
@@ -165,6 +179,29 @@ export default function ReportIssue() {
           Upload visual evidence. Our AI will analyze the hazard, verify the location, and draft a municipal dispatch.
         </p>
       </div>
+
+      {/* Info Disclaimer Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="mb-8 mx-auto max-w-3xl w-full"
+      >
+        <div className="relative overflow-hidden rounded-2xl border border-sky-200 dark:border-sky-500/20 bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-500/10 dark:to-blue-500/10 p-4 shadow-sm">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-sky-200/30 dark:bg-sky-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+          <div className="relative flex items-start gap-3">
+            <div className="shrink-0 mt-0.5 p-2 bg-sky-100 dark:bg-sky-500/20 rounded-xl">
+              <Info className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-sky-800 dark:text-sky-300 mb-1">What can you report?</h4>
+              <p className="text-sm text-sky-700 dark:text-sky-400/90 leading-relaxed">
+                You can report any kind of issues, for example: <span className="font-semibold">potholes</span>, <span className="font-semibold">water leakages</span>, <span className="font-semibold">damaged streetlights</span>, <span className="font-semibold">waste management concerns</span>, and <span className="font-semibold">public infrastructure challenges</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Reporting Mode Selector */}
       <div className="flex justify-center mb-10">
