@@ -86,7 +86,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-2 z-50 relative">
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="p-2 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-lg border border-emerald-500/20">
               <Hexagon className="h-5 w-5 text-emerald-500" />
             </div>
@@ -96,14 +96,15 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex space-x-1 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden xl:flex flex-1 justify-center mx-4">
+            <div className="flex space-x-0.5">
             {navItems.map((item) => {
               const isActive = pathname === item.path;
               const Icon = item.icon;
               return (
-                <Link key={item.name} href={item.path} className="relative px-3 py-2 rounded-full transition-colors">
-                  <div className={`flex items-center gap-1.5 text-xs font-bold ${isActive ? 'text-emerald-600 dark:text-white' : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'}`}>
-                    <Icon className="h-4 w-4" />
+                <Link key={item.name} href={item.path} className="relative px-2.5 py-2 rounded-full transition-colors">
+                  <div className={`flex items-center gap-1 text-[11px] font-bold whitespace-nowrap ${isActive ? 'text-emerald-600 dark:text-white' : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'}`}>
+                    <Icon className="h-3.5 w-3.5" />
                     {item.name}
                   </div>
                   {isActive && (
@@ -112,10 +113,11 @@ export default function Navbar() {
                 </Link>
               );
             })}
+            </div>
           </div>
 
           {/* Gamification Stats & Actions */}
-          <div className="flex items-center gap-3 z-50">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* Gamified Points Badge */}
             {mounted && user && (
               <div className="hidden sm:flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full">
